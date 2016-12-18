@@ -1,0 +1,12 @@
+---
+# Test CNAME records, include no expansion, simple expanion, and {{ zone }} expansion
+FQDNs:
+  source: www.expansion.com
+  zone_source: "{{ zone }}"
+zones:
+  zone.com:
+    SOA_email: account@domain.com
+    CNAME:
+      - { host: www1, target: www.one.com }
+      - { host: www2, target: source }
+      - { host: www3, target: zone_source }

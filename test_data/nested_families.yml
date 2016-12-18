@@ -1,0 +1,30 @@
+# Testing nested families
+# root/1.1.1.1 is only defined in the domain
+# Shadow1 is defined in domain and family1
+#   1.1.1.2 is in both, domain has ttl 11, family1 has ttl 30
+#   1.1.1.4 is in domain only, ttl 11
+#   1.1.1.5 is in family1 only, ttl 31
+# family1/2.1.1.1 is defined only in family1, ttl 20
+# shadow2/1.1.1.3 is defined in domain and family2, domain has ttl 12, family2 has ttl 32
+# family2/3.1.1.1 is defined only in family2, ttl 21
+---
+families:
+  family1:
+    A:
+      - { host: family1, target: 2.1.1.1, ttl_seconds: 20 }
+      - { host: shadow1, target: 1.1.1.2, ttl_seconds: 30 }
+      - { host: shadow1, target: 1.1.1.5, ttl_seconds: 31 }
+  family2:
+    A:
+      - { host: family2, target: 3.1.1.1, ttl_seconds: 21 }
+      - { host: shadow2, target: 1.1.1.3, ttl_seconds: 32 }
+zones:
+  domain.com:
+    families: [ family1, family2 ]
+    SOA_email: account@domain.com
+    A:
+      - { host: root, target: 1.1.1.1, ttl_seconds: 10 }
+      - { host: shadow1, target: 1.1.1.2, ttl_seconds: 11 }
+      - { host: shadow1, target: 1.1.1.4, ttl_seconds: 11 }
+      - { host: shadow2, target: 1.1.1.3, ttl_seconds: 12 }
+

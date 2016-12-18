@@ -1,0 +1,9 @@
+# Test that *_seconds fields work
+---
+zones:
+  zone1:
+    SOA_email: account@domain.com
+    refresh_seconds: 10
+    retry_seconds: 11
+    expire_seconds: 12
+    ttl_seconds: 13

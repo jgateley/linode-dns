@@ -1,0 +1,9 @@
+---
+# Basic MX test, note the empty host name
+FQDNs:
+  mx1: mx1.foo.com
+zones:
+  zone.com:
+    SOA_email: account@domain.com
+    MX:
+      - { host: , target: mx1, priority: 10 }

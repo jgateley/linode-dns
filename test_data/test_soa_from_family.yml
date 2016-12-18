@@ -1,0 +1,7 @@
+# Test SOA import from family
+---
+families:
+  zone: { SOA_email: account@domain.com }
+zones:
+  zone1: { families: [ zone ] }
+

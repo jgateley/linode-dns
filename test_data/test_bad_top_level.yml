@@ -1,0 +1,14 @@
+# Test a bad top level entry (junk)
+---
+IPs:
+  giraffe: 1.2.3.4
+FQDNs:
+  elephant: elephant.foo.com
+TXTs:
+  DKIM: dkim
+families:
+  zone: { foo: bar }
+junk:
+  junk: { foo: bar }
+zones:
+  zone1: { SOA_email: account@domain.com }

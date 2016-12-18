@@ -1,0 +1,19 @@
+# Test that families are ignored if present in zone for *_seconds
+---
+families:
+  zone:
+    SOA_email: bad@domain.com
+    refresh_seconds: 20
+    retry_seconds: 21
+    expire_seconds: 22
+    ttl_seconds: 23
+zones:
+  zone1:
+    families: [ zone ]
+    SOA_email: account@domain.com
+    refresh_seconds: 10
+    retry_seconds: 11
+    expire_seconds: 12
+    ttl_seconds: 13
+
+

@@ -1,0 +1,9 @@
+---
+# Test expansion of {{ zone }}
+families:
+  base:
+    CNAME: [ { host: www, target: "{{ zone }}" } ]
+zones:
+  zone.com:
+    SOA_email: account@domain.com
+    families: [ base ]

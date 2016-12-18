@@ -1,0 +1,4 @@
+# Test SOA_email field
+---
+zones:
+  zone1: { SOA_email: account@domain.com }

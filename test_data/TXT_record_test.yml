@@ -1,0 +1,10 @@
+# Test TXT records, with expansion
+---
+TXTs:
+  source: expansion
+zones:
+  zone.com:
+    SOA_email: account@domain.com
+    TXT:
+      - { host: www1, target: foo }
+      - { host: www2, target: source }

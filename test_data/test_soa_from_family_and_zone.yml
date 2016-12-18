@@ -1,0 +1,7 @@
+# Test family is ignored for SOA_email when present in zone
+---
+families:
+  zone: { SOA_email: bad@domain.com }
+zones:
+  zone1: { families: [ zone ], SOA_email: account@domain.com }
+

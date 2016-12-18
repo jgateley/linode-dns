@@ -1,0 +1,27 @@
+---
+# Test generation of A and AAAA records
+# Three cases:
+#    IPv4 only
+#    IPv6 only
+#    IPv4 and IPv6
+IPs:
+  ipv4: 1.1.1.1
+  both: 2.2.2.2 2600:3c00::f6e6:7287
+  ipv6: 2600:3c00::f6e6:7288
+zones:
+  zone.com:
+    SOA_email: account@domain.com
+    A:
+      - { host: www1, target: 3.3.3.3 }
+      - 
+        host: www2
+        target: 4.4.4.4 2600:3c00::1111
+      - 
+        host: www3
+        target: 2600::2222
+      - { host: www4, target: ipv4 }
+      - { host: www5, target: both }
+      - { host: www6, target: ipv6 }
+      - { host: www7, target: 1.2.3.4 }
+      - { host: www7, target: 2.3.4.5 }
+

@@ -1,0 +1,13 @@
+---
+# Test empty host name, with families too
+families:
+  parent:
+    A: [ { host: , target: 4.4.4.4 } ]
+zones:
+  zone.com:
+    SOA_email: account@domain.com
+    A: [ { host: , target: 3.3.3.3 } ]
+  zone2.com:
+    SOA_email: account@domain.com
+    families: [ parent ]
+
