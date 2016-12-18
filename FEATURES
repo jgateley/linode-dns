@@ -1,0 +1,60 @@
+linode-dns is a python script (named update.py) that reads a desired DNS configuration
+from a YAML file, reads an existing configuration via Linode's API, and figures out
+what it needs to change to bring the Linode configuration in sync with the desired
+configuration. It can either apply the changes or do a dry run, printing out what
+changes are needed.
+
+Features:
+* Dry run mode (-d)
+* Empty hosts: if the host is empty, Linode treats it as the zone name
+* Intelligent IPv4 and IPv6 handling.
+  Instead of A and AAAA records, the YAML config file only has A records. Instead
+  of a single IP address, it has a space separated list of IP addresses. It parses
+  them to determine if they are IPv4 or IPv6. It will generate the desired DNS
+  records. So a single A entry in the configuration file may generate multiple
+  records, both A and AAAA. See the examples below.
+* IP shorthand: A records look up their target in a table of IP shorthands.
+* FQDN shorthand: CNAME and MX records look up their target in a table of FQDN shorthands.
+* TXT shorthand: TXT records look up their target in a table of text shorthands.
+  Very useful for SPF/DKIM records
+* Zone families: A family looks like a (possibly incomplete) zone, with fields and
+  records. Any zone that refers to the family gets those fields and records.
+
+
+Examples:
+
+IPv4 and IPv6.
+
+A single IPv4 address:
+---
+zone.com:
+  A: [ { host: foo, target: 1.2.3.4 } ]
+This generates a single A record mapping foo.zone.com to 1.2.3.4
+
+A single IPv4 and IPv6 address:
+---
+zone.com:
+  A: [ { host: foo, target: 1.2.3.4 2600::fc33 } ]
+This generates a single A record for 1.2.3.4 and a single AAAA record for 2600::fc33
+Using the IPs section this is the same as:
+---
+IPs:
+  foo: 1.2.3.4 2600::fc33
+zone.com:
+  A: [ { host: foo, target: foo } ]
+
+Mutiple addresses:
+---
+IPs:
+  foo: 1.2.3.4 5.6.7.8 2600::fc33 2600::ab11
+zone.com:
+  A: [ { host: foo, target: foo } ]
+This generates two A records and two AAAA records
+
+
+CNAME FQDN expansion:
+---
+FQDNs:
+  remote: www.remotehost.com
+zone.com:
+  CNAME: [ { host: relay, target: remote } ]

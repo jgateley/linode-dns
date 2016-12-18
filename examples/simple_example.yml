@@ -1,0 +1,17 @@
+# A very simple example showing fields available in zones and records
+# We have one domain, mycorp.com and one host serving this domain (1.1.1.1/2600::ff)
+# Blank host in A record is translated to mycorp.com
+---
+IPs:
+  server: 1.1.1.1 2600::ffff
+zones:
+  mycorp.com:
+    SOA_email: account@mycorp.com
+    refresh_seconds: 3600
+    retry_seconds: 3600
+    expire_seconds: 3600
+    ttl_seconds: 3600
+    A:
+      - { host: , target: server, ttl_seconds: 3600 }
+    CNAME:
+      - { host: www, target: {{ zone }}, ttl_seconds: 3600 }

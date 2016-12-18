@@ -1,0 +1,46 @@
+# This is a full featured example
+#
+# HostingCorp.com is a company that hosts customer's websites and e-mail
+# It currently has two customers: fastcars.com and coolcats.com
+# It has two servers, production and testing with both IPv4 and IPv6 addresses
+# Customer websites include special "ipv6.site.com" and "ipv6test.site.com" that are IPv6 only
+# Websites are hosted on production and test
+# Production also hosts the mail server
+---
+IPs:
+  production: 1.1.1.1 2600::1111
+  testing: 2.2.2.2 2600::2222
+  production_ipv6: 2600::1111
+  testing_ipv6: 2600::2222
+FQDNs:
+  production: production.HostingCorp.com
+  testing: test.HostingCorp.com
+  mx: mx.HostingCorp.com
+TXTs:
+  DKIM: v=DKIM1; k=rsa; p=MIG...QAB
+  SPF: v=spf1 ip4:1.1.1.1 ip6:2600::1111 -all
+families:
+  admin: { SOA_email: admin@HostingCorp.com }
+  mailer:
+    MX: [ { host: , target: mx, priority: 10 } ]
+    TXT: [ { host: , target: SPF }, { host: mail._domainkey, target: DKIM } ]
+  web:
+    A: [ { host: , target: production } ]
+    CNAME:
+      - { host: www, target: "{{ zone }}" }
+      - { host: test, target: testing }
+      - { host: ipv6, target: ipv6.HostingCorp.com }
+      - { host: ipv6test, target: ipv6test.HostingCorp.com }
+zones:
+  hostingcorp.com:
+    families: [ admin, mailer ]
+    A:
+      - { host: production, target: production }
+      - { host: testing, target: testing }
+      - { host: mx, target: production }
+      - { host: ipv6, target: production_ipv6 }
+      - { host: ipv6test, target: testing_ipv6 }
+  fastcars.com:
+    families: [ admin, mailer, web ]
+  coolcats.com:
+    families: [ admin, mailer, web ]
